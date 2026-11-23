@@ -1,3 +1,5 @@
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/headroom-1?utm_medium=integration&utm_source=button&utm_campaign=headroom)
+
 # Headroom on Railway
 
 Railway template for [Headroom](https://github.com/headroomlabs-ai/headroom) 0.45.0, an LLM context-compression proxy. It sits between your coding agent or app and your LLM provider (Anthropic, OpenAI or any OpenAI-compatible API) and shrinks tool outputs, logs, JSON and RAG chunks before they reach the model.
@@ -17,6 +19,7 @@ One service, `Headroom`, built from this repo's `Dockerfile`:
 |---|---|---|
 | `HEADROOM_PROXY_TOKEN` | generated (`${{secret(48)}}`) | Bearer token every client must send. The service refuses to start without it. |
 | `PORT` | `8787` | Port the proxy listens on. |
+| `RAILWAY_DEPLOYMENT_DRAINING_SECONDS` | `20` | Gives the old container time to save its savings history when you redeploy. |
 
 No provider key is stored on the server: clients keep sending their own key (`x-api-key` / `Authorization`) or subscription login, and Headroom forwards it upstream.
 
