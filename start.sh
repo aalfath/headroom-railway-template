@@ -14,7 +14,9 @@ if [ -z "${HEADROOM_PROXY_TOKEN:-}" ]; then
 fi
 
 export HOME=/home/nonroot
-export HEADROOM_HOST="${HEADROOM_HOST:-::}"
+# The upstream image sets HEADROOM_HOST=127.0.0.1; Railway needs every
+# interface (IPv4 for the public domain, IPv6 for the private network).
+export HEADROOM_HOST="${HEADROOM_BIND_HOST:-::}"
 export HEADROOM_PORT="${PORT:-${HEADROOM_PORT:-8787}}"
 export HEADROOM_WORKSPACE_DIR="${HEADROOM_WORKSPACE_DIR:-$STATE_DIR}"
 export HEADROOM_CONFIG_DIR="${HEADROOM_CONFIG_DIR:-$STATE_DIR/config}"
@@ -50,5 +52,5 @@ fi
 mkdir -p "$STATE_DIR" "$HEADROOM_CONFIG_DIR" "$HF_HOME"
 chown -R 1000:1000 "$STATE_DIR" 2>/dev/null || true
 
-echo "railway-start: headroom $(headroom --version 2>/dev/null | tail -1) on [$HEADROOM_HOST]:$HEADROOM_PORT, cpus=$cpus mem_limit_mb=$mem_mb"
+echo "railway-start: $(headroom --version 2>/dev/null | tail -1) on [$HEADROOM_HOST]:$HEADROOM_PORT, cpus=$cpus mem_limit_mb=$mem_mb"
 exec setpriv --reuid=1000 --regid=1000 --init-groups headroom proxy "$@"
