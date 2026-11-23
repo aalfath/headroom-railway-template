@@ -24,7 +24,7 @@ Optional variables (set them on the service if you need them): `OPENAI_TARGET_AP
 
 ## Memory
 
-The proxy itself uses about 300 MB. The Kompress ML compressor needs about 600 MB more, so on plans with less than about 900 MB per service (Railway Free and Trial: 0.5 GB) the start script turns Kompress off and Headroom runs with its rule-based compressors (JSON, logs, code, diffs, search results). Give the service 1 GB or more to get ML compression too.
+The proxy itself uses about 300–400 MB. The Kompress ML compressor needs about 550 MB more (about 850 MB in use at a 1 GB limit), so when the service's memory limit is below 1.5 GB (Railway Free and Trial: 0.5 GB) the start script turns Kompress off and Headroom runs with its rule-based compressors (JSON, logs, code, diffs, search results). With 1.5 GB or more (the Hobby and Pro default limits are higher) Kompress is on and its model (about 260 MB) is downloaded once to the volume. Set `HEADROOM_DISABLE_KOMPRESS=0` to force it on anyway.
 
 ## Using it
 

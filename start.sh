@@ -45,12 +45,13 @@ export HEADROOM_KOMPRESS_ONNX_INTRA_THREADS="${HEADROOM_KOMPRESS_ONNX_INTRA_THRE
 export HEADROOM_KOMPRESS_ONNX_INTER_THREADS="${HEADROOM_KOMPRESS_ONNX_INTER_THREADS:-1}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-$cpus}"
 
-# The Kompress ML compressor needs about 600 MB on top of the proxy. Below
-# ~900 MB of RAM (Railway Free/Trial: 0.5 GB) it would be OOM-killed, so the
-# proxy runs with its rule-based compressors only (JSON, logs, code, diffs).
-if [ -z "${HEADROOM_DISABLE_KOMPRESS:-}" ] && [ "$mem_mb" -gt 0 ] && [ "$mem_mb" -lt 900 ]; then
+# The Kompress ML compressor needs about 550 MB on top of the proxy (about
+# 850 MB in use at a 1 GB limit). Below 1.5 GB of RAM (Railway Free/Trial: 0.5 GB)
+# it could be OOM-killed, so the proxy runs with its rule-based compressors only
+# (JSON, logs, code, diffs). Set HEADROOM_DISABLE_KOMPRESS=0 to force it on.
+if [ -z "${HEADROOM_DISABLE_KOMPRESS:-}" ] && [ "$mem_mb" -gt 0 ] && [ "$mem_mb" -lt 1500 ]; then
   export HEADROOM_DISABLE_KOMPRESS=1
-  echo "railway-start: ${mem_mb} MB RAM limit; Kompress ML compression off (needs about 1 GB). Rule-based compression stays on."
+  echo "railway-start: ${mem_mb} MB RAM limit; Kompress ML compression off (needs 1.5 GB or more). Rule-based compression stays on."
 fi
 
 mkdir -p "$STATE_DIR" "$HEADROOM_CONFIG_DIR" "$HF_HOME"
