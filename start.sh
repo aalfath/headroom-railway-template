@@ -27,6 +27,9 @@ export HF_HOME="${HF_HOME:-$STATE_DIR/hf}"
 export HEADROOM_UPDATE_CHECK="${HEADROOM_UPDATE_CHECK:-off}"
 # Railway's health check shouldn't depend on reaching api.anthropic.com.
 export HEADROOM_SKIP_UPSTREAM_CHECK="${HEADROOM_SKIP_UPSTREAM_CHECK:-1}"
+# POST /v1/compress and /v1/usage (SDK, LiteLLM guardrail, gateways) answer
+# remote callers; they still need the proxy token.
+export HEADROOM_COMPRESS_ALLOW_REMOTE="${HEADROOM_COMPRESS_ALLOW_REMOTE:-1}"
 # Upstream's anonymous usage beacon is on by default; a hosted proxy keeps it
 # off unless the deployer sets HEADROOM_BEACON=on.
 export HEADROOM_BEACON="${HEADROOM_BEACON:-off}"
